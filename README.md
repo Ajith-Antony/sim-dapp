@@ -140,18 +140,18 @@ my-project/
 
 ## Architectural Decisions
 
-1. Next.js App Router Over Pages Router
+### 1. Next.js App Router Over Pages Router
 
 - The project uses the App Router for:
 - Co-locating UI + logic in route segments
 - Built-in layouts for global providers (Chakra, WalletContext)
 - Future scalability (API routes, middleware, parallel routing)
 
-### Trade-off:
+#### Trade-off:
 
 - Because this is a dApp (a highly client-side experience), many components are marked "use client".
 
-2. React Context for Wallet & Contract State
+### 2. React Context for Wallet & Contract State
 
 - Two separate contexts exist:
 - WalletContext → manages provider, signer, chain, account
@@ -161,23 +161,23 @@ my-project/
 - Easier testing (Contexts can be mocked independently)
 - Cleaner React tree — only subscribing components re-render
 
-### Trade-off:
+#### Trade-off:
 
 - Contexts may introduce additional render layers vs Zustand/Jotai.
 - Given app size, this is acceptable.
 
-3. Ethers.js v6 Instead of Wagmi/RainbowKit
+### 3. Ethers.js v6 Instead of Wagmi/RainbowKit
 
 - Ethers.js is used directly for wallet/data:
 - Lightweight and dependency-free
 - Complete control over provider and signer states
 - Avoided vendor lock-in for a small project
 
-### Trade-off:
+#### Trade-off:
 
 - Manual handling of events (accountsChanged, chainChanged) vs built-ins.
 
-4. Local Hardhat Network as Primary Chain
+### 4. Local Hardhat Network as Primary Chain
 
 - The app is designed to run purely on localhost:8545, because:
 - Development simplicity
@@ -185,22 +185,22 @@ my-project/
 - Instant block mining → fast UX
 - Zero RPC cost
 
-### Trade-off:
+#### Trade-off:
 
 - Not instantly portable to testnets without additional provider logic.
 
-5. Manual Contract Service Layer
+### 5. Manual Contract Service Layer
 
 - All contract interactions go through /services/contractService.ts.
 - Ensures consistent instantiation of contracts
 - Avoids instantiating contracts inside UI components
 - Enables swapping networks or ABIs in the future without touching UI
 
-### Trade-off:
+#### Trade-off:
 
 - Adds light abstraction overhead.
 
-6. Tailwind + Chakra UI Hybrid
+### 6. Tailwind + Chakra UI Hybrid
 
 - The project uses Chakra UI for layout & components but Tailwind for utility styling (spacing, backgrounds, responsive tweaks).
 
@@ -208,35 +208,35 @@ my-project/
 - Tailwind enables fine-grained quick styling
 - Eliminates need to write custom CSS files
 
-### Trade-off:
+#### Trade-off:
 
 - Two styling systems → slight cognitive overhead.
 
-7. Minimal Client-Side State (No Redux / Zustand)
+### 7. Minimal Client-Side State (No Redux / Zustand)
 
 - Global wallet state lives in context
 - Assets are fetched on demand
 - No user-generated content or pagination
 - Adding a state management library was unnecessary.
 
-8. Simple Error Handling Strategy
+### 8. Simple Error Handling Strategy
 
 - Errors (e.g., missing MetaMask, network switching failure, buy failure) are surfaced via Chakra Toaster notifications.
 - Consistent UX
 - Errors stay visible without interrupting workflow
 - No need for modal dialogs or error boundaries
 
-### Trade-off:
+#### Trade-off:
 
 - Toaster messages are non-blocking → user may still attempt actions in invalid state.
 
-9. Backend-less Architecture
+### 9. Backend-less Architecture
 
 - No server or backend is used.
 - All data comes from the smart contract
 - Product of the decentralized-first approach
 - Simpler project footprint
 
-### Trade-off:
+#### Trade-off:
 
 - Cannot index or cache data; relies entirely on blockchain state.
