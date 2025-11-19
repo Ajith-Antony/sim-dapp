@@ -95,7 +95,7 @@ export function useContractLogic(): ContractState {
         }
 
         await buyAsset(prov, assetId);
-        await loadAssets();
+        await loadAssets(prov, false);
       } catch (e: any) {
         setError("Buy failed");
         throw e;

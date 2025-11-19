@@ -81,6 +81,7 @@ export default function AssetCard({ asset }: { asset: any }) {
         </Text>
 
         <Button
+          bg={"green.700"}
           onClick={handleBuy}
           loading={loading}
           loadingText="Pending..."
